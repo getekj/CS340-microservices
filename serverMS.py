@@ -30,7 +30,18 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print("save file")
                 with open(data["path"], 'w') as info_file:
                     info_file.write(data["info"])
-                conn.sendall(b"Success!")
+                success_msg = {"status":"Success"}
+                success_msg_json = json.dumps(success_msg)
+                conn.sendall(bytes(success_msg_json,encoding="utf-8"))
             if data["action"] == "load":
                 print("load file")
+                send_back = {}
+                with open(data["path"], 'r') as load_file:
+                    #print(load_file.read())
+                    #send_back_text = load_file.read()
+                    send_back["info"] = load_file.read()
+                print(send_back)
+                send_back_json = json.dumps(send_back)
+                conn.sendall(bytes(send_back_json,encoding="utf-8"))
+
 
